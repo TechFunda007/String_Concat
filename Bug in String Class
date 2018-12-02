@@ -1,0 +1,42 @@
+public class TechFunda {
+
+	public static void main(String[] args) {
+		
+		TechFunda tf = new TechFunda();
+		tf.stringPlusOperator();
+		tf.stringConcat();
+	}
+	
+	public void stringPlusOperator() {
+		
+		String a = "Tech";
+		String b = null;
+		a = a+b;
+		System.out.println(a); // gives a = Technull
+	}
+	public void stringConcat() {
+		
+		String a = "Tech";
+		String b = null;
+		a = a.concat(b);
+		System.out.println(a); // gives Null Pointer Exception at java.lang.String.concat(String.java:2027)
+	}
+}
+
+Reason/ root cause
+
+Internally concat method of String class converts the string into a char array and tries to calculate the length.
+Here twist is it calculates lenght without checking null. whereas in + operator we have String builder conversion which takes care of null pointer exception
+
+snippet of concat method implemetation
+
+ public String concat(String str) {
+        int otherLen = str.length();   // line number 2027 in String class
+        if (otherLen == 0) {
+            return this;
+        }
+        int len = value.length;
+        char buf[] = Arrays.copyOf(value, len + otherLen);
+        str.getChars(buf, len);
+        return new String(buf, true);
+    }
